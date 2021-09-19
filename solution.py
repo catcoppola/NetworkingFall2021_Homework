@@ -1,20 +1,23 @@
 # import socket module
 from socket import *
 
+# In order to terminate the program
+import sys
 
 def webServer(port=13331):
     #this creates a TCP socket:
     serverSocket = socket(AF_INET, SOCK_STREAM)
     # Prepare a server socket
     #associates the server port number with this socket
-    serverSocket.bind(('', port))
+    serverSocket.bind(("", port))
     # Fill in start
     #this is the welcoming socket, after establishing the welcome door, we wait and listen for the client... max queued connections is 1
     serverSocket.listen(1)
+    print('Server ready to receive.')
     # Fill in end
     while True:
         # Establish the connection
-        #print('Ready to serve...')
+        print('Ready to serve...')
         connectionSocket, addr = serverSocket.accept() # Fill in start      #Fill in end
         try:
             try:
@@ -24,7 +27,7 @@ def webServer(port=13331):
                 outputdata = f.read() # Fill in start     #Fill in end
                 # Send one HTTP header line into socket.
                 # Fill in start
-                connectionSocket.send('HTTP/1.1 200 OK\r\n\r\n')
+                connectionSocket.send('HTTP/1.1 200 OK\r\n\r\n'.encode)
                 # Fill in end
                 # Send the content of the requested file to the client
                 for i in range(0, len(outputdata)):
@@ -34,7 +37,7 @@ def webServer(port=13331):
             except IOError:
                 # Send response message for file not found (404)
                 # Fill in start
-                 connectionSocket.send('HTTP/1.1 404 Not Found \r\n\r\n')
+                 connectionSocket.send('HTTP/1.1 404 Not Found \r\n\r\n'.encode)
                 # Fill in end
 
                 # Close client socket
