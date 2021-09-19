@@ -13,11 +13,11 @@ def webServer(port=13331):
     # Fill in start
     #this is the welcoming socket, after establishing the welcome door, we wait and listen for the client... max queued connections is 1
     serverSocket.listen(1)
-    print('Server ready to receive.')
+    # print('Server ready to receive.')
     # Fill in end
     while True:
         # Establish the connection
-        print('Ready to serve...')
+        # print('Ready to serve...')
         connectionSocket, addr = serverSocket.accept() # Fill in start      #Fill in end
         try:
             try:
