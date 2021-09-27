@@ -1,72 +1,76 @@
-
-# welcome_assignment_answers
-# Input - All eight questions given in the assignment.
-# Output - The right answer for the specific question.
-
-def welcome_assignment_answers(question):
-    #The student doesn't have to follow the skeleton for this assignment.
-    #Another way to implement is using a "case" statements similar to C.
-    if question == "Are encoding and encryption the same? - Yes/No":
-        answer = "No"
-    elif question == "Is it possible to decrypt a message without a key? - Yes/No":
-        answer = "No"
-    elif question == "In Slack, what is the secret passphrase posted in the #cyberfellows-computernetworking-fall2021 channel posted by a TA?":
-        answer = "mTLS"
-    elif question == "Are encoding and encryption the same?":
-        answer = "No"
-    elif question == "Is it possible to decode a message without a key? - Yes/No":
-        answer = "Yes"
-    elif question == "Is a hashed message supposed to be un-hashed? - Yes/No":
-        answer = "No"
-    elif question == "What is the MD5 hashing value to the following message: 'NYU Computer Networking' - Use MD5 hash generator and use the answer in your code":
-        answer = "42b76fe51778764973077a5a94056724"
-    elif question == "Is MD5 a secured hashing algorithm? - Yes/No":
-        answer = "No"
-    elif question == "What layer from the TCP/IP model the protocol DHCP belongs to? - The answer should be a numeric number":
-        answer = 5
-    elif question == "What layer of the TCP/IP model the protocol TCP belongs to? - The answer should be a numeric number":
-        answer = 4
-    else:
-        answer = "I don't know this question"
+from socket import *
 
 
-    return(answer)
-# Complete all the questions.
+def smtp_client(port=1025, mailserver='127.0.0.1'):
+    msg = "\r\n My message"
+    endmsg = "\r\n.\r\n"
+
+    # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
+
+    # Create socket called clientSocket and establish a TCP connection with mailserver and port
+
+    # Fill in start
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect(mailserver, port)
+    # Fill in end
+
+    recv = clientSocket.recv(1024).decode()
+    print(recv)
+    if recv[:3] != '220':
+        print('220 reply not received from server.')
+
+    # Send HELO command and print server response.
+    heloCommand = 'HELO Alice\r\n'
+    clientSocket.send(heloCommand.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    if recv1[:3] != '250':
+        print('250 reply not received from server.')
+
+    # Send MAIL FROM command and print server response.
+    # Fill in start
+    mailFrom = '<cad432@nyu.edu>'
+    clientSocket.send(mailFrom.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    # Fill in end
+
+    # Send RCPT TO command and print server response.
+    # Fill in start
+    recptTo = '<catherineducey@gmail.com>'
+    clientSocket.send(recptTo.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    # Fill in end
+
+    # Send DATA command and print server response.
+    # Fill in start
+    dataCommand = 'Data Command'
+    clientSocket.send(dataCommand.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    # Fill in end
+
+    # Send message data.
+    # Fill in start
+    message = "This is a test."
+    clientSocket.send(message.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    # Fill in end
+
+    # Message ends with a single period.
+    # Fill in start
+    # Fill in end
+
+    # Send QUIT command and get server response.
+    # Fill in start
+    quit = "Quit"
+    clientSocket.send(quit.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    # Fill in end
 
 
-if __name__ == "__main__":
-    #use this space to debug and verify that the program works
-    debug_question = "Are encoding and encryption the same? - Yes/No"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "Is it possible to decrypt a message without a key? - Yes/No"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "In Slack, what is the secret passphrase posted in the #cyberfellows-computernetworking-fall2021 channel posted by a TA?"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "Are encoding and encryption the same?"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "Is it possible to decrypt a message without a key? - Yes/No"
-    print("Is it possible to decrypt a message without a key? - Yes/No")
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "Is a hashed message supposed to be un-hashed? - Yes/No"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "Is MD5 a secured hashing algorithm? - Yes/No"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "What is the MD5 hashing value to the following message: 'NYU Computer Networking' - Use MD5 hash generator and use the answer in your code"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "What layer from the TCP/IP model the protocol DHCP belongs to? - The answer should be a numeric number"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "What layer of the TCP/IP model the protocol TCP belongs to? - The answer should be a numeric number"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-    debug_question = "What do we say when we don't know?"
-    print(debug_question)
-    print(welcome_assignment_answers(debug_question))
-
+if __name__ == '__main__':
+    smtp_client(1025, '127.0.0.1')
