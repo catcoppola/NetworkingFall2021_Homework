@@ -1,21 +1,16 @@
-from socket import *
 import os
-import sys
-import struct
-import time
 import select
-import binascii
+import struct
+import sys
+import time
+from socket import *
+import statistics
+
 # Should use stdev
+
 
 ICMP_ECHO_REQUEST = 8
 
-packet_min = 0
-packet_max = 0
-packet_count = 0
-packet_sum = 0
-packet_avg = 0
-stdev = 0
-stdev_var = 0
 
 def checksum(string):
    csum = 0
@@ -56,37 +51,17 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
        # Fill in start
 
-       # Fetch the ICMP header from the IP packet
-
-       icmpHeader = recPacket[20:28] #gives the header bytes 20-28
+       icmpHeader = recPacket[20:28]
        type, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
-       #Above: type is the type of protocol, code is
-
        if packetID == ID:
-           byteSize = struct.calcsize('d')
-           sentTime = struct.unpack('d', recPacket[28:28+byteSize])[0]
-
-           packet_sum += byteSize
-           packet_count += 1
-           packet_squared = byteSize^2
-           stdev_var += packet_squared
-
-
-           if byteSize < packet_min:
-               packet_min = byteSize
-
-           if byteSize > packet_max:
-               packet_max = byteSize
-
-       return timeReceived-sentTime
+           bytesSize = struct.calcsize("d")
+           sendTime = struct.unpack("d", recPacket[28:28 + bytesSize])[0]
+           return timeReceived - sendTime
 
        # Fill in end
        timeLeft = timeLeft - howLongInSelect
        if timeLeft <= 0:
            return "Request timed out."
-
-       packet_avg = packet_sum / packet_count
-       stdev = stdev_var / packet_count
 
 
 def sendOnePing(mySocket, destAddr, ID):
@@ -133,37 +108,33 @@ def doOnePing(destAddr, timeout):
 
 
 def ping(host, timeout=1):
-   # timeout=1 means: If one second goes by without a reply from the server,      # the client assumes that either the client's ping or the server's pong is lost
+   # timeout=1 means: If one second goes by without a reply from the server,
+   # the client assumes that either the client's ping or the server's pong is lost
    dest = gethostbyname(host)
    print("Pinging " + dest + " using Python:")
    print("")
    # Calculate vars values and return them
 
-   vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),str(round(stdev(stdev_var), 2))]
    # Send ping requests to a server separated by approximately one second
+
+   delay_list = []
+
    for i in range(0,4):
        delay = doOnePing(dest, timeout)
+       delay_list.append(delay)
        print(delay)
        time.sleep(1)  # one second
 
+   packet_min = min(delay_list)
+   packet_max = max(delay_list)
+   packet_avg = (sum(delay_list))/len(delay_list)
+   stdev_var = stdev(delay_list)
+
+   vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),
+           str(round(stdev(stdev_var), 2))]
+
+   print(vars)
    return vars
 
 if __name__ == '__main__':
    ping("google.co.il")
-
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
