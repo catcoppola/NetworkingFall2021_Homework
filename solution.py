@@ -115,7 +115,7 @@ def ping(host, timeout=1):
    print("Pinging " + dest + " using Python:")
    print("")
    # Calculate vars values and return them
-
+   #vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),        str(round(statistics.stdev(stdev_var), 2))]
    # Send ping requests to a server separated by approximately one second
 
    delay_list = []
@@ -130,10 +130,7 @@ def ping(host, timeout=1):
    packet_max = max(delay_list)
    packet_avg = (sum(delay_list))/len(delay_list)
    stdev_var = statistics.stdev(delay_list)
-
-   vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),
-           str(round(statistics.stdev(stdev_var), 2))]
-
+   vars = packet_min, packet_max, packet_avg, stdev_var
    print(vars)
    return vars
 
