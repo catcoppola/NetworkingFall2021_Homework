@@ -5,6 +5,7 @@ import sys
 import time
 from socket import *
 import statistics
+import binascii
 
 # Should use stdev
 
@@ -128,10 +129,10 @@ def ping(host, timeout=1):
    packet_min = min(delay_list)
    packet_max = max(delay_list)
    packet_avg = (sum(delay_list))/len(delay_list)
-   stdev_var = stdev(delay_list)
+   stdev_var = statistics.stdev(delay_list)
 
    vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),
-           str(round(stdev(stdev_var), 2))]
+           str(round(statistics.stdev(stdev_var), 2))]
 
    print(vars)
    return vars
