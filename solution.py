@@ -148,7 +148,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    rtt = "None"
+                    rtt = 0
                     tracelist1.append([ttl, rtt, 'Request timed out'])
                     tracelist2.append(tracelist1[-1])
                     # Fill in end
