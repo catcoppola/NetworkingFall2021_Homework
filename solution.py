@@ -85,6 +85,7 @@ def get_route(hostname):
 
             # Fill in start
             # Make a raw socket named mySocket
+            icmp = getprotobyname("icmp")
             mySocket = socket(AF_INET, SOCK_RAW, icmp)
             # Fill in end
 
@@ -123,7 +124,6 @@ def get_route(hostname):
                 # Fill in end
                 try:  # try to fetch the hostname
                 # Fill in start
-                    icmp = getprotobyname("icmp")
                     ip_header = struct.unpack('!BBHHHBBH4s4s', recvPacket[:20])
                     sourceAddress = inet_ntoa(ip_header[8])
                     sourceHostname = gethostbyaddr(addr[0])[0]
