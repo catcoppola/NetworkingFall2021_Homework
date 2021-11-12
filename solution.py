@@ -140,7 +140,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = round(timeSent * 1000)
-                    tracelist1.append(ttl, rtt, addr[0], sourceHostname)
+                    tracelist1.append([ttl, rtt, addr[0], sourceHostname])
                     tracelist2.append(tracelist1)
                     # Fill in end
                 elif types == 3:
