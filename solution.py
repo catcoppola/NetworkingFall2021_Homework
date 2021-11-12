@@ -128,6 +128,9 @@ def get_route(hostname):
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
                     srcHostname = "Not Found"
+                    tracelist1.append([str(ttl), str(rtt), destAddr, srcHostname])
+                    tracelist2.append([tracelist1])
+
                 # Fill in end
 
                 if types == 11:
@@ -136,8 +139,7 @@ def get_route(hostname):
                                                                 bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    rtt = round(timeSent * 1000)
-                    rtt = round(timeSent * 1000)
+                    rtt = round(timeSent * 1000) + 'ms'
                     tracelist1.append([str(ttl), str(rtt), destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
@@ -147,7 +149,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    rtt = 0
+                    rtt = "None"
                     tracelist1.append([str(ttl), str(rtt), 'Request timed out'])
                     tracelist2.append([tracelist1])
 
@@ -157,7 +159,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
-                    rtt = round((t - timeSent) * 1000)
+                    rtt = round((t - timeSent) * 1000) + 'ms'
                     tracelist1.append([str(ttl), str(rtt), destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
@@ -172,6 +174,4 @@ def get_route(hostname):
 
             finally:
                 mySocket.close()
-
-        return(tracelist2)
 
