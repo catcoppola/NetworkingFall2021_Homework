@@ -39,7 +39,7 @@ def checksum(string):
     return answer
 
 
-def build_packet(mySocket, destAddr, ID):
+def build_packet():
     # Fill in start
     # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
     # packet to be sent was made, secondly the checksum was appended to the header and
@@ -87,6 +87,7 @@ def get_route(hostname):
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
             try:
+                myID = os.getpid()
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
                 t = time.time()
