@@ -78,15 +78,15 @@ def get_route(hostname):
     timeLeft = TIMEOUT
     tracelist1 = []  # This is your list to use when iterating through each trace
     tracelist2 = []  # This is your list to contain all traces
+    destAddr = gethostbyname(hostname)
 
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            destAddr = gethostbyname(hostname)
 
             # Fill in start
             # Make a raw socket named mySocket
-
-            mySocket = socket(AF_INET, SOCK_RAW, destAddr)
+            icmp = getprotobyname("icmp")
+            mySocket = socket(AF_INET, SOCK_RAW, icmp) 
             # Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
