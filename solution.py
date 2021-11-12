@@ -130,7 +130,7 @@ def get_route(hostname):
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
-                    sourceHostname = "Cannot Find Host Name"
+                    sourceHostname = 0
                 # Fill in end
 
                 if types == 11:
