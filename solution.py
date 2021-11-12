@@ -39,17 +39,22 @@ def checksum(string):
     return answer
 
 
-def build_packet():
+def build_packet(mySocket, destAddr, ID):
     # Fill in start
     # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
     # packet to be sent was made, secondly the checksum was appended to the header and
     # then finally the complete packet was sent to the destination.
 
     # Make the header in a similar way to the ping exercise.
-    myChecksum = 0 # dummy checksum
+    myChecksum = 0
+    # Make a dummy header with a 0 checksum
+    # struct -- Interpret strings as packed binary data
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
+    # Calculate the checksum on the data and the dummy header.
     myChecksum = checksum(header + data)
+
+    # Get the right checksum, and put in the header
 
     if sys.platform == 'darwin':
         # Convert 16-bit integers from host to network  byte order
@@ -57,13 +62,11 @@ def build_packet():
     else:
         myChecksum = htons(myChecksum)
 
-    # Append checksum to the header.
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
-
-    # Don’t send the packet yet , just return the final packet in this function.
-    # Fill in end
-    # So the function ending should look like this
     packet = header + data
+
+    mySocket.sendto(packet, (destAddr, 1))  # AF_INET address must be tuple, not str
+
     return packet
 
 
@@ -132,6 +135,8 @@ def get_route(hostname):
                     # You should add your responses to your lists here
                     tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
                     tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    print(tracelist1)
+                    print(tracelist2)
                     # Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
@@ -140,6 +145,8 @@ def get_route(hostname):
                     # You should add your responses to your lists here
                     tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
                     tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    print(tracelist1)
+                    print(tracelist2)
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
@@ -148,6 +155,8 @@ def get_route(hostname):
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
                     tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    print(tracelist1)
+                    print(tracelist2)
                     return tracelist1, tracelist2
                     # Fill in end
                 else:
@@ -155,7 +164,11 @@ def get_route(hostname):
                 # If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append("Error")
                     tracelist2.append("Error")
+                    print(tracelist1)
+                    print(tracelist2)
                 # Fill in end
                 break
             finally:
                 mySocket.close()
+
+get_route('www.google.com')
