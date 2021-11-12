@@ -87,7 +87,6 @@ def get_route(hostname):
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
             try:
-                myID = os.getpid()
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
                 t = time.time()
@@ -115,7 +114,7 @@ def get_route(hostname):
             else:
                 # Fill in start
                 # Fetch the icmp type from the IP packet
-                recPacket, addr = mySocket.recvfrom(1024)
+                types,  = struct.unpack('b', recvPacket[20:21])
                 icmpHeader = recPacket[20:28]
                 types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
 
