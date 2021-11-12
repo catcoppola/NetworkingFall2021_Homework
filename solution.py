@@ -123,9 +123,7 @@ def get_route(hostname):
                 # Fill in end
                 try:  # try to fetch the hostname
                 # Fill in start
-                    ip_header = struct.unpack('!BBHHHBBH4s4s', recvPacket[:20])
-                    sourceAddress = inet_ntoa(ip_header[8])
-                    sourceHostname = gethostbyaddr(sourceAddress)
+                    srcHostname = gethostbyaddr(addr[0])[0]
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
@@ -140,7 +138,7 @@ def get_route(hostname):
                     # You should add your responses to your lists here
                     rtt = round(timeSent * 1000)
                     rtt = round(timeSent * 1000)
-                    tracelist1.append([str(ttl), str(rtt), addr[0], sourceHostname])
+                    tracelist1.append([str(ttl), str(rtt), addr[0], srcHostname])
                     tracelist2.append([tracelist1])
 
                     # Fill in end
@@ -160,7 +158,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     rtt = round((t - timeSent) * 1000)
-                    tracelist1.append([str(ttl), str(rtt), addr[0], sourceHostname])
+                    tracelist1.append([str(ttl), str(rtt), addr[0], srcHostname])
                     tracelist2.append([tracelist1])
 
                     # Fill in end
@@ -173,7 +171,7 @@ def get_route(hostname):
                 break
             finally:
                 mySocket.close()
-                
+
         return (tracelist1)
 
 
