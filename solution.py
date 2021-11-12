@@ -41,17 +41,13 @@ def checksum(string):
 
 def build_packet():
     # Fill in start
-    # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
-    # packet to be sent was made, secondly the checksum was appended to the header and
-    # then finally the complete packet was sent to the destination.
-
-    # Make the header in a similar way to the ping exercise.
     myChecksum = 0
+    myID = os.getpid() & 0xFFFF
     # Make a dummy header with a 0 checksum
-    # struct -- Interpret strings as packed binary data
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
     data = struct.pack("d", time.time())
-    # Calculate the checksum on the data and the dummy header.
+
     myChecksum = checksum(header + data)
 
     # Get the right checksum, and put in the header
@@ -62,11 +58,19 @@ def build_packet():
     else:
         myChecksum = htons(myChecksum)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+    # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
+    # packet to be sent was made, secondly the checksum was appended to the header and
+    # then finally the complete packet was sent to the destination.
+
+    # Make the header in a similar way to the ping exercise.
+    # Append checksum to the header.
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
+    # Don’t send the packet yet , just return the final packet in this function.
+    # Fill in end
+
+    # So the function ending should look like this
+
     packet = header + data
-
-    mySocket.sendto(packet, (destAddr, 1))  # AF_INET address must be tuple, not str
-
     return packet
 
 
@@ -80,8 +84,8 @@ def get_route(hostname):
             destAddr = gethostbyname(hostname)
 
             # Fill in start
-            mySocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
-            #Raw sockets - for adding custom headers instead of headers provided by the underlying operating system.
+            # Make a raw socket named mySocket
+            mySocket = socket(AF_INET, SOCK_RAW, icmp)
             # Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
@@ -96,8 +100,8 @@ def get_route(hostname):
                 if whatReady[0] == []:  # Timeout
                     tracelist1.append("* * * Request timed out.")
                     # Fill in start
-                    tracelist2.append(tracelist1)
                     # You should add the list above to your all traces list
+                    tracelist2.append([str(ttl), tracelist1[-1]])
                     # Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
@@ -105,8 +109,8 @@ def get_route(hostname):
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
                     # Fill in start
-                    tracelist2.append(tracelist1)
                     # You should add the list above to your all traces list
+                    tracelist2.append([str(ttl), tracelist1[-1]])
                     # Fill in end
             except timeout:
                 continue
@@ -114,61 +118,56 @@ def get_route(hostname):
             else:
                 # Fill in start
                 # Fetch the icmp type from the IP packet
-                types,  = struct.unpack('b', recvPacket[20:21])
-                icmpHeader = recPacket[20:28]
-                types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
-
+                type, code, icmp_checksum, icmp_id, sequence, timeSent = struct.unpack('bbHHhd', recvPacket[20:36])
+                types, = struct.unpack('b', recvPacket[20:21])
                 # Fill in end
                 try:  # try to fetch the hostname
                 # Fill in start
-                    fetchhostname = gethostbyaddr(addr)
+                    ip_header = struct.unpack('!BBHHHBBH4s4s', recvPacket[:20])
+                    sourceAddress = inet_ntoa(ip_header[8])
+                    sourceHostname = gethostbyaddr(addr[0])[0]
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
-                    fetchhostname = "Host Name Not Found"
+                    sourceHostname = "Cannot Find Host Name"
                 # Fill in end
 
                 if types == 11:
                     bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
+                    timeSent = struct.unpack("d", recvPacket[28:28 +
+                                                                bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    print(tracelist1)
-                    print(tracelist2)
+                    rtt = str(round(timeSent * 1000))
+                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    tracelist2.append(tracelist1[-1])
                     # Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    print(tracelist1)
-                    print(tracelist2)
+                    rtt = "None"
+                    tracelist1.append([str(ttl), rtt, 'Request timed out'])
+                    tracelist2.append(tracelist1[-1])
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
-                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
-                    print(tracelist1)
-                    print(tracelist2)
-                    return tracelist1, tracelist2
+                    rtt = str(round((t - timeSent) * 1000))
+                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    tracelist2.append(tracelist1[-1])
                     # Fill in end
                 else:
                 # Fill in start
                 # If there is an exception/error to your if statements, you should append that to your list here
-                    tracelist1.append("Error")
-                    tracelist2.append("Error")
-                    print(tracelist1)
-                    print(tracelist2)
+                    tracelist1.append([ttl, 'none', 'Error Occurred'])
                 # Fill in end
                 break
             finally:
                 mySocket.close()
 
-get_route('www.google.com')
+
+    get_route("google.com")
