@@ -79,7 +79,7 @@ def get_route(hostname):
     tracelist1 = []  # This is your list to use when iterating through each trace
     tracelist2 = []  # This is your list to contain all traces
     destAddr = gethostbyname(hostname)
-    
+
 
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
@@ -127,7 +127,7 @@ def get_route(hostname):
                 # Fill in start
                     ip_header = struct.unpack('!BBHHHBBH4s4s', recvPacket[:20])
                     sourceAddress = inet_ntoa(ip_header[8])
-                    sourceHostname = gethostbyaddr(addr[0])[0]
+                    sourceHostname = gethostbyaddr(sourceAddress)
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
@@ -141,8 +141,10 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = round(timeSent * 1000)
+                    rtt = round(timeSent * 1000)
                     tracelist1.append([ttl, rtt, addr[0], sourceHostname])
                     tracelist2.append([tracelist1])
+
                     # Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
@@ -152,6 +154,7 @@ def get_route(hostname):
                     rtt = 0
                     tracelist1.append([ttl, rtt, 'Request timed out'])
                     tracelist2.append([tracelist1])
+
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
@@ -161,11 +164,13 @@ def get_route(hostname):
                     rtt = round((t - timeSent) * 1000)
                     tracelist1.append([ttl, rtt, addr[0], sourceHostname])
                     tracelist2.append([tracelist1])
+
                     # Fill in end
                 else:
                 # Fill in start
                 # If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append([ttl, 0, 'Error Occurred'])
+
                 # Fill in end
                 break
             finally:
