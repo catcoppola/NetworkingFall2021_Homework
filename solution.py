@@ -128,8 +128,6 @@ def get_route(hostname):
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
                     srcHostname = "Not Found"
-                    tracelist1.append([str(ttl), str(rtt), destAddr, srcHostname])
-                    tracelist2.append([tracelist1])
 
                 # Fill in end
 
