@@ -174,5 +174,3 @@ def get_route(hostname):
 
         return (tracelist1)
 
-
-    get_route("google.com")
