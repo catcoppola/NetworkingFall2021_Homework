@@ -85,7 +85,7 @@ def get_route(hostname):
 
             # Fill in start
             # Make a raw socket named mySocket
-            
+
             mySocket = socket(AF_INET, SOCK_RAW, destAddr)
             # Fill in end
 
@@ -139,8 +139,8 @@ def get_route(hostname):
                                                                 bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    rtt = str(round(timeSent * 1000))
-                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    rtt = round(timeSent * 1000)
+                    tracelist1.append(ttl, rtt, addr[0], sourceHostname)
                     tracelist2.append(tracelist1[-1])
                     # Fill in end
                 elif types == 3:
@@ -149,7 +149,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = "None"
-                    tracelist1.append([str(ttl), rtt, 'Request timed out'])
+                    tracelist1.append([ttl, rtt, 'Request timed out'])
                     tracelist2.append(tracelist1[-1])
                     # Fill in end
                 elif types == 0:
@@ -157,8 +157,8 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
-                    rtt = str(round((t - timeSent) * 1000))
-                    tracelist1.append([str(ttl), rtt, str(addr[0]), sourceHostname])
+                    rtt = round((t - timeSent) * 1000)
+                    tracelist1.append([ttl, rtt, addr[0], sourceHostname])
                     tracelist2.append(tracelist1[-1])
                     # Fill in end
                 else:
