@@ -169,8 +169,9 @@ def get_route(hostname):
 
                 # Fill in end
                 break
+            
             finally:
                 mySocket.close()
 
-        return (tracelist1)
+        return(tracelist2)
 
