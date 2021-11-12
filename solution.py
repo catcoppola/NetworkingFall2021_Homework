@@ -118,11 +118,11 @@ def get_route(hostname):
                 # Fill in end
                 try:  # try to fetch the hostname
                 # Fill in start
-                    hostname = gethostname(hostname)
+                    fetchhostname = gethostbyaddr(addr)
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
-                    hostname = "Host Name Not Found"
+                    fetchhostname = "Host Name Not Found"
                 # Fill in end
 
                 if types == 11:
@@ -130,24 +130,24 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(types)
-                    tracelist2.append(types)
+                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
                     # Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(types)
-                    tracelist2.append(types)
+                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
-                    tracelist1.append(types)
-                    tracelist2.append(types)
+                    tracelist1.append(fetchhostname, types, code, checksum, packetID, sequence)
+                    tracelist2.append(fetchhostname, types, code, checksum, packetID, sequence)
                     return tracelist1, tracelist2
                     # Fill in end
                 else:
