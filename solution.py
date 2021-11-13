@@ -165,7 +165,7 @@ def get_route(hostname):
                     rtt = str(round((timeReceived - timeSent)) * 1000) + 'ms'
                     tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
                     tracelist2.append([tracelist1])
-                    
+
 
                     # Fill in end
                 else:
@@ -173,11 +173,11 @@ def get_route(hostname):
                 # If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append([str(ttl), 'none', 'no addr', 'Error Occurred'])
                     tracelist2.append([tracelist1])
-                
-                return tracelist2
+
+            return tracelist2
 
                 # Fill in end
                 break
-
+    
             finally:
                 mySocket.close()
