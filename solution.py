@@ -82,7 +82,8 @@ def get_route(hostname):
 
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            #destAddr = gethostbyname(hostname)
+            destAddr = gethostbyname(hostname)
+            destAddr = gethostbyname(hostname)
             # Fill in start
             # Make a raw socket named mySocket
             icmp = getprotobyname("icmp")
@@ -141,7 +142,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = str(round((timeReceived - timeSent) * 1000)) + 'ms'
-                    tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
+                    tracelist1.append([str(ttl), rtt, destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
 
@@ -152,7 +153,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = "None"
-                    tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
+                    tracelist1.append([str(ttl), rtt, destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
 
@@ -163,7 +164,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     rtt = str(round((timeReceived - timeSent)) * 1000) + 'ms'
-                    tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
+                    tracelist1.append([str(ttl), rtt, destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
 
@@ -171,7 +172,7 @@ def get_route(hostname):
                 else:
                 # Fill in start
                 # If there is an exception/error to your if statements, you should append that to your list here
-                    tracelist1.append([str(ttl), 'none', addr[0], srcHostname])
+                    tracelist1.append([str(ttl), 'none', destAddr, srcHostname])
                     tracelist2.append([tracelist1])
 
                 return tracelist2
