@@ -174,7 +174,7 @@ def get_route(hostname):
                     tracelist1.append([str(ttl), 'none', 'no addr', 'Error Occurred'])
                     tracelist2.append([tracelist1])
 
-             return tracelist2
+                return tracelist2
 
                 # Fill in end
                 break
