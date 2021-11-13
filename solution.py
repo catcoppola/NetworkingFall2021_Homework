@@ -102,7 +102,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add the list above to your all traces list
                     tracelist2.append([str(ttl), '*', '*', "Request Timed Out"])
-                    return (tracelist2)
+                    
                     # Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
@@ -112,8 +112,8 @@ def get_route(hostname):
                     # Fill in start
                     # You should add the list above to your all traces list
                     tracelist2.append([str(ttl), '*', '*', "Request Timed Out"])
-                    return (tracelist2)
                     
+
                     # Fill in end
             except timeout:
                 continue
@@ -142,7 +142,7 @@ def get_route(hostname):
                     rtt = str(round((timeReceived - timeSent) * 1000)) + 'ms'
                     tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
                     tracelist2.append([tracelist1])
-                    return (tracelist2)
+                    
 
                     # Fill in end
                 elif types == 3:
@@ -153,7 +153,7 @@ def get_route(hostname):
                     rtt = "None"
                     tracelist1.append([str(ttl), rtt, 'No Addr', 'Request timed out'])
                     tracelist2.append([tracelist1])
-                    return (tracelist2)
+                    
 
                     # Fill in end
                 elif types == 0:
@@ -164,7 +164,7 @@ def get_route(hostname):
                     rtt = str(round((timeReceived - timeSent)) * 1000) + 'ms'
                     tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
                     tracelist2.append([tracelist1])
-                    return (tracelist2)
+                    
 
                     # Fill in end
                 else:
@@ -172,11 +172,12 @@ def get_route(hostname):
                 # If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append([str(ttl), 'none', 'no addr', 'Error Occurred'])
                     tracelist2.append([tracelist1])
-                    return(tracelist2)
+                    
 
                 # Fill in end
                 break
 
             finally:
                 mySocket.close()
+                return(tracelist2)
 
