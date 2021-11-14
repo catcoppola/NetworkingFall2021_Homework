@@ -130,6 +130,7 @@ def get_route(hostname):
                 try:  # try to fetch the hostname
                 # Fill in start
                     srcHostname = gethostbyaddr(addr[0])[0]
+                    sourceIP= gethostbyaddr(addr[0])[2]
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
@@ -143,7 +144,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = str(round((timeReceived - startedSelect) * 1000)) + 'ms'
-                    tracelist1.append([str(ttl), rtt, str(addr[0]), srcHostname])
+                    tracelist1.append([str(ttl), rtt, str(sourceIP), srcHostname])
                     tracelist2.append([tracelist1])
 
 
@@ -164,7 +165,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     rtt = str(round((timeReceived - startedSelect)) * 1000) + 'ms'
-                    tracelist1.append([str(ttl), rtt, str(addr[0]), srcHostname])
+                    tracelist1.append([str(ttl), rtt, str(sourceIP), srcHostname])
                     tracelist2.append([tracelist1])
 
 
