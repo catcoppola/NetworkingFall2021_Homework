@@ -178,14 +178,13 @@ def get_route(hostname):
                     #tracelist2.append(tracelist1)
 
                 # Fill in end
-                tracelist2.append(tracelist1)
                 break
-                
+
 
             finally:
-
+                tracelist2.append(tracelist1)
                 mySocket.close()
-
+    
     return tracelist2
 
 
