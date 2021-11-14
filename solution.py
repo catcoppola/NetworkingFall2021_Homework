@@ -77,7 +77,7 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-    tracelist1 = [ttl, rtt, ip, addr[0]]  # This is your list to use when iterating through each trace
+    tracelist1 = []  # This is your list to use when iterating through each trace
     tracelist2 = []  # This is your list to contain all traces
 
     for ttl in range(1, MAX_HOPS):
