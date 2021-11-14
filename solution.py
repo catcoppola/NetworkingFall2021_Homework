@@ -77,11 +77,11 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-    tracelist1 = []  # This is your list to use when iterating through each trace
-    #tracelist2 = []  # This is your list to contain all traces
+    #tracelist1 = []  # This is your list to use when iterating through each trace
+    tracelist2 = []  # This is your list to contain all traces
 
     for ttl in range(1, MAX_HOPS):
-        tracelist2 = []
+        tracelist1 = []
         for tries in range(TRIES):
             destAddr = gethostbyname(hostname)
             # Fill in start
@@ -177,9 +177,9 @@ def get_route(hostname):
 
                 # Fill in end
                 break
-            
+
             finally:
-                
+
                 mySocket.close()
 
     return tracelist2
