@@ -178,8 +178,9 @@ def get_route(hostname):
                     #tracelist2.append(tracelist1)
 
                 # Fill in end
-                break
                 tracelist2.append(tracelist1)
+                break
+                
 
             finally:
 
