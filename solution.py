@@ -81,9 +81,9 @@ def get_route(hostname):
     tracelist2 = []  # This is your list to contain all traces
 
     for ttl in range(1, MAX_HOPS):
-        tracelist1 = []
-
+        
         for tries in range(TRIES):
+            tracelist1 = []
             destAddr = gethostbyname(hostname)
             # Fill in start
             # Make a raw socket named mySocket
@@ -131,7 +131,7 @@ def get_route(hostname):
                 try:  # try to fetch the hostname
                 # Fill in start
                     srcHostname = gethostbyaddr(addr[0])[0]
-                    sourceIP= gethostbyaddr(addr[0])[2]
+                    sourceIP = gethostbyaddr(addr[0])[2]
                 # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
@@ -178,13 +178,13 @@ def get_route(hostname):
                     #tracelist2.append(tracelist1)
 
                 # Fill in end
+                tracelist2.append(tracelist1)
                 break
 
 
             finally:
-                tracelist2.append(tracelist1)
                 mySocket.close()
-    
+
     return tracelist2
 
 
