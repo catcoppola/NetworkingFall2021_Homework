@@ -81,7 +81,7 @@ def get_route(hostname):
     tracelist2 = []  # This is your list to contain all traces
 
     for ttl in range(1, MAX_HOPS):
-        tracelist1 = []
+        #tracelist1 = []
 
         for tries in range(TRIES):
 
@@ -102,7 +102,7 @@ def get_route(hostname):
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:  # Timeout
-                    tracelist1.append([str(ttl), '*', "Request timed out", ''])
+                    tracelist1 = [str(ttl), '*', "Request timed out", '']
                     # Fill in start
                     # You should add the list above to your all traces list
                     #tracelist2.append([str(ttl), "Request Timed Out"])
@@ -113,7 +113,7 @@ def get_route(hostname):
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
-                    tracelist1.append([str(ttl), '*', "Request timed out", ''])
+                    tracelist1 = [str(ttl), '*', "Request timed out", '']
                     # Fill in start
                     # You should add the list above to your all traces list
                     tracelist2.append(tracelist1)
@@ -145,7 +145,8 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = str(round((timeReceived - timeSent) * 1000)) + 'ms'
-                    tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
+                    
+                    tracelist1 = [str(ttl), rtt, addr[0], srcHostname]
                     tracelist2.append(tracelist1)
 
 
@@ -156,7 +157,8 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = "None"
-                    tracelist1.append([str(ttl), '*', "Request timed out", ''])
+                    
+                    tracelist1 = [str(ttl), '*', "Request timed out", '']
                     tracelist2.append(tracelist1)
 
                     # Fill in end
@@ -166,7 +168,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     rtt = str(round((timeReceived - timeSent)) * 1000) + 'ms'
-                    tracelist1.append([str(ttl), rtt, addr[0], srcHostname])
+                    tracelist1 = [str(ttl), rtt, addr[0], srcHostname]
                     tracelist2.append(tracelist1)
 
 
@@ -174,7 +176,7 @@ def get_route(hostname):
                 else:
                 # Fill in start
                 # If there is an exception/error to your if statements, you should append that to your list here
-                    tracelist1.append([str(ttl), '*', "Request timed out", ''])
+                    tracelist1 = [str(ttl), '*', "Request timed out", ''] 
                     tracelist2.append(tracelist1)
 
                 # Fill in end
