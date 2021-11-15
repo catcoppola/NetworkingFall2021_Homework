@@ -81,9 +81,10 @@ def get_route(hostname):
     tracelist2 = []  # This is your list to contain all traces
 
     for ttl in range(1, MAX_HOPS):
-
+        tracelist1 = []
+        
         for tries in range(TRIES):
-            tracelist1 = []
+            
             destAddr = gethostbyname(hostname)
             # Fill in start
             # Make a raw socket named mySocket
@@ -115,7 +116,6 @@ def get_route(hostname):
                     tracelist1.append([str(ttl), "* * * Request timed out."])
                     # Fill in start
                     # You should add the list above to your all traces list
-                    #tracelist2.append([str(ttl), "Request timed out"])
                     tracelist2.append(tracelist1)
 
                     # Fill in end
@@ -178,7 +178,7 @@ def get_route(hostname):
                     tracelist2.append(tracelist1)
 
                 # Fill in end
-                
+
                 break
 
 
