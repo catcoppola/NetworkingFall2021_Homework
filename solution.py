@@ -129,7 +129,7 @@ def get_route(hostname):
                 types = struct.unpack('b', recvPacket[20:21])
                 # Fill in end
                 try:  # try to fetch the hostname
-                # Fill in starta
+                # Fill in start
                     srcHostname = gethostbyaddr(addr[0])[0]
                     sourceIP = gethostbyaddr(addr[0])[2]
                 # Fill in end
@@ -145,7 +145,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here
                     rtt = str(round((timeReceived - startedSelect) * 1000)) + 'ms'
-                    tracelist1.append([str(ttl), rtt, str(sourceIP), srcHostname])
+                    tracelist1.append([str(ttl), rtt, sourceIP, srcHostname])
                     tracelist2.append(tracelist1)
 
 
@@ -166,7 +166,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
                     rtt = str(round((timeReceived - startedSelect)) * 1000) + 'ms'
-                    tracelist1.append([str(ttl), rtt, str(sourceIP), srcHostname])
+                    tracelist1.append([str(ttl), rtt, sourceIP, srcHostname])
                     tracelist2.append(tracelist1)
 
 
