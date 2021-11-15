@@ -1,4 +1,3 @@
-
 from socket import *
 import os
 import sys
@@ -126,7 +125,7 @@ def get_route(hostname):
                 # Fill in start
                 # Fetch the icmp type from the IP packet
                 types, code, icmp_checksum, icmp_id, sequence, timeSent = struct.unpack('bbHHhd', recvPacket[20:36])
-                types = struct.unpack('b', recvPacket[20:21])
+                #types = struct.unpack('b', recvPacket[20:21])
                 # Fill in end
                 try:  # try to fetch the hostname
                 # Fill in start
@@ -186,5 +185,3 @@ def get_route(hostname):
                 mySocket.close()
 
     return tracelist2
-
-
